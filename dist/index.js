@@ -122,11 +122,21 @@ var jsonSchemaGrammar = {
   }
 };
 var LlamaService = class extends Service {
+  llama;
+  model;
+  modelPath;
+  grammar;
+  ctx;
+  sequence;
+  modelUrl;
+  ollamaModel;
+  messageQueue = [];
+  isProcessing = false;
+  modelInitialized = false;
+  runtime;
+  static serviceType = ServiceType.TEXT_GENERATION;
   constructor() {
     super();
-    this.messageQueue = [];
-    this.isProcessing = false;
-    this.modelInitialized = false;
     this.llama = void 0;
     this.model = void 0;
     this.modelUrl = "https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-8B-GGUF/resolve/main/Hermes-3-Llama-3.1-8B.Q8_0.gguf?download=true";
@@ -328,6 +338,7 @@ var LlamaService = class extends Service {
     }
   }
   async getCompletionResponse(context, temperature, stop, frequency_penalty, presence_penalty, max_tokens, useGrammar) {
+    var _a;
     context = context += "\nIMPORTANT: Escape any quotes in any string fields with a backslash so the JSON is valid.";
     const ollamaModel = process.env.OLLAMA_MODEL;
     if (ollamaModel) {
@@ -379,7 +390,7 @@ var LlamaService = class extends Service {
       throw new Error("Response is undefined");
     }
     if (useGrammar) {
-      let jsonString = response.match(/```json(.*?)```/s)?.[1].trim();
+      let jsonString = (_a = response.match(/```json(.*?)```/s)) == null ? void 0 : _a[1].trim();
       if (!jsonString) {
         try {
           jsonString = JSON.stringify(JSON.parse(response));
@@ -532,10 +543,9 @@ var LlamaService = class extends Service {
     }
     const embeddingContext = await this.model.createEmbeddingContext();
     const embedding = await embeddingContext.getEmbeddingFor(text);
-    return embedding?.vector ? [...embedding.vector] : void 0;
+    return (embedding == null ? void 0 : embedding.vector) ? [...embedding.vector] : void 0;
   }
 };
-LlamaService.serviceType = ServiceType.TEXT_GENERATION;
 
 // src/index.ts
 var imagePlugin = {

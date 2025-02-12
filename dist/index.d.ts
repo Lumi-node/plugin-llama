@@ -2,7 +2,7 @@ declare const imagePlugin: {
     name: string;
     description: string;
     services: any[];
-    actions: never[];
+    actions: any[];
 };
 
 export { imagePlugin as default };
