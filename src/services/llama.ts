@@ -177,6 +177,11 @@ export class LlamaService extends Service {
     this.runtime = runtime;
     this.modelPath = path.join(runtime.getSetting("LLAMALOCAL_PATH").trim() ?? "./", modelName);
     this.ollamaModel = runtime.getSetting("OLLAMA_MODEL");
+    
+    // Mark initialization as complete without loading the model yet
+    // The actual model loading will happen on first use via ensureInitialized()
+    this.modelInitialized = false;
+    elizaLogger.info("LlamaService initialization completed successfully");
   }
 
   private async ensureInitialized() {
