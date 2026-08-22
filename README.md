@@ -1,3 +1,12 @@
+> **Fork notice.** This is a copy of
+> [`@elizaos-plugins/plugin-llama`](https://github.com/elizaOS/eliza) from the
+> elizaOS project, modified to fix a `LlamaService` initialization hang. It is
+> not an original work and is not affiliated with elizaOS.
+>
+> Upstream is MIT licensed, copyright Shaw Walters and elizaOS Contributors;
+> that license is reproduced verbatim in `LICENSE` and continues to govern this
+> code. For the maintained version, use upstream.
+
 # @elizaos/plugin-llama
 
 Core LLaMA plugin for Eliza OS that provides local Large Language Model capabilities.
